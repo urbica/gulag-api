@@ -11,6 +11,10 @@
   },
   "main": "index.js",
   "scripts": {
+    "db:create": "db-migrate -m ./src/db/migrations --config ./src/db/database.json create",
+    "db:migrate": "db-migrate -m ./src/db/migrations --config ./src/db/database.json up",
+    "db:rollback": "db-migrate -m ./src/db/migrations --config ./src/db/database.json down",
+    "db:reset": "db-migrate -m ./src/db/migrations --config ./src/db/database.json reset",
     "cz": "git-cz",
     "lint": "lint src",
     "precommit": "lint-staged",
@@ -44,7 +48,12 @@
     "supertest": "3.0.0"
   },
   "dependencies": {
+    "bluebird": "3.5.1",
+    "db-migrate": "0.10.5",
+    "db-migrate-pg": "0.3.1",
+    "dotenv": "5.0.0",
     "koa": "2.5.0",
-    "koa-router": "7.4.0"
+    "koa-router": "7.4.0",
+    "pg": "7.4.1"
   }
 }
