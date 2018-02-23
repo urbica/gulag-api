@@ -1,0 +1,48 @@
+{
+  "name": "gulag-workshop",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@gitlab.urbica.co:2222/device25/gulag-workshop.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "cz": "git-cz",
+    "lint": "lint src",
+    "release": "standart-version",
+    "start": "nodemon index.js",
+    "test": "jest"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md}": [
+      "prettier-eslint --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "commitizen": "2.9.6",
+    "cz-conventional-changelog": "2.1.0",
+    "eslint": "4.18.1",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.9.0",
+    "eslint-plugin-jest": "21.12.2",
+    "husky": "0.14.3",
+    "jest": "22.4.2",
+    "lint-staged": "6.1.0",
+    "nodemon": "1.15.1",
+    "prettier": "1.10.2",
+    "prettier-eslint": "8.8.1",
+    "prettier-eslint-cli": "4.7.1",
+    "standard-version": "4.3.0",
+    "supertest": "3.0.0"
+  }
+}
