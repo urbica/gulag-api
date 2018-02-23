@@ -13,6 +13,7 @@
   "scripts": {
     "cz": "git-cz",
     "lint": "lint src",
+    "precommit": "lint-staged",
     "release": "standart-version",
     "start": "nodemon index.js",
     "test": "jest"
@@ -23,10 +24,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,json,md}": [
-      "prettier-eslint --write",
-      "git add"
-    ]
+    "*.{js,json,md}": ["prettier-eslint --write", "git add"]
   },
   "devDependencies": {
     "commitizen": "2.9.6",
