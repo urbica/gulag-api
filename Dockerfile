@@ -5,6 +5,6 @@ EXPOSE 3001
 WORKDIR /usr/app
 COPY package.json .
 RUN npm i
-COPY * .
+COPY * ./
 
 CMD ['yarn start']
