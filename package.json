@@ -19,7 +19,7 @@
     "lint": "eslint src",
     "precommit": "lint-staged",
     "release": "standart-version",
-    "start": "nodemon index.js",
+    "start:dev": "API_PORT=3001 nodemon index.js",
     "test": "jest"
   },
   "config": {
@@ -33,10 +33,10 @@
   "devDependencies": {
     "commitizen": "2.9.6",
     "cz-conventional-changelog": "2.1.0",
-    "eslint": "4.18.1",
+    "eslint": "4.18.2",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "2.9.0",
-    "eslint-plugin-jest": "21.12.2",
+    "eslint-plugin-jest": "21.12.3",
     "husky": "0.14.3",
     "jest": "22.4.2",
     "lint-staged": "7.0.0",

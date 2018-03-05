@@ -1,6 +1,8 @@
 const app = require('./src/app');
 require('dotenv').config();
 
-app.listen(3001, () => {
-  console.log('Server started at localhost:3001');
+const port = process.env.API_PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server started at localhost:${port}`);
 });
