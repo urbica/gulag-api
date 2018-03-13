@@ -19,7 +19,7 @@
     "lint": "eslint src",
     "precommit": "lint-staged",
     "release": "standart-version",
-    "start": "nodemon index.js",
+    "start": "API_PORT=3001 nodemon index.js",
     "test": "jest"
   },
   "config": {
