@@ -51,6 +51,7 @@
     "@urbica/pg-migrate": "1.0.1",
     "bluebird": "3.5.1",
     "dotenv": "5.0.1",
+    "jsonwebtoken": "8.2.0",
     "kcors": "2.2.1",
     "koa": "2.5.0",
     "koa-bodyparser": "4.2.0",

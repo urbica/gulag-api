@@ -1,4 +1,4 @@
-FROM node:9-alpine
+FROM node:8.9.4-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -14,5 +14,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 3000
-CMD [ 'npm', 'run', 'db:migrate' ]
+CMD [ "npm", "run", "db:migrate" ]
 CMD [ "node", "index.js" ]
