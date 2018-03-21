@@ -6,8 +6,14 @@ const db = require('../db');
 //   description jsonb not null
 // );
 
-const getAll = () => db.query('SELECT * FROM camp_types').then(result => result.rows);
-
 module.exports = {
-  getAll
+  getAll: async () => {
+    const query = `
+      SELECT *
+      FROM camp_types;
+    `;
+    const result = db.query(query);
+
+    return result.rows;
+  }
 };

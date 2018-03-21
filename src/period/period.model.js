@@ -1,43 +1,59 @@
 const db = require('../db');
 
-// type Period = {
-//   id: number,
-//   year: number,
-//   title: json,
-//   description: json
-// }
-
-const getAll = () => db.query('SELECT * FROM periods').then(result => result.rows);
-
-const get = periodId =>
-  db.query('SELECT * FROM periods WHERE id = $1', [periodId]).then(result => result.rows[0]);
-
-const create = period =>
-  db
-    .query('INSERT INTO periods(year, title, description) VALUES($1, $2, $3) RETURNING *', [
-      period.year,
-      period.title,
-      period.description
-    ])
-    .then(result => result.rows[0]);
-
-const del = periodId =>
-  db.query('DELETE FROM periods WHERE id = $1', [periodId]).then(result => result);
-
-const update = (periodId, newPeriod) =>
-  db
-    .query('UPDATE periods SET year=$1, title=$2, description=$3 WHERE id = $4 RETURNING *', [
-      newPeriod.year,
-      newPeriod.title,
-      newPeriod.description,
-      periodId
-    ])
-    .then(result => result.rows[0]);
+// create table periods (
+//   id serial primary key,
+//   year integer NOT NULL,
+//   title jsonb NOT NULL,
+//   description jsonb NOT NULL
+// );
 
 module.exports = {
-  getAll,
-  get,
-  create,
-  del,
-  update
+  getAll: async () => {
+    const query = `
+      SELECT *
+      FROM periods;
+    `;
+    const result = await db.query(query);
+    return result.rows;
+  },
+
+  get: async (periodId) => {
+    const query = `
+      SELECT *
+      FROM periods
+      WHERE id = $1;
+    `;
+    const result = await db.query(query, [periodId]);
+    return result.rows[0];
+  },
+
+  create: async ({ year, title, description }) => {
+    const query = `
+      INSERT INTO periods(year, title, description)
+      VALUES($1, $2, $3)
+      RETURNING *;
+    `;
+    const result = await db.query(query, [year, title, description]);
+    return result.rows[0];
+  },
+
+  del: async (periodId) => {
+    const query = `
+      DELETE FROM periods
+      WHERE id = $1;
+    `;
+    const result = await db.query(query, [periodId]);
+    return result;
+  },
+
+  update: async ({ year, title, description }, periodId) => {
+    const query = `
+      UPDATE periods
+      SET year=$1, title=$2, description=$3
+      WHERE id = $4
+      RETURNING *;
+    `;
+    const result = await db.query(query, [year, title, description, periodId]);
+    return result.rows[0];
+  }
 };

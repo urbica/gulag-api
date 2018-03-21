@@ -1,4 +1,5 @@
 FROM node:8.9.4-alpine
+LABEL maintainer='bakhvalov.andrey@gmail.com'
 
 # Create app directory
 WORKDIR /usr/src/app

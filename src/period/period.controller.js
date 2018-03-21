@@ -32,9 +32,9 @@ router.del('/:periodId(\\d+)', async (ctx) => {
 });
 
 router.put('/:periodId(\\d+)', async (ctx) => {
-  const periodID = parseInt(ctx.params.periodId, 10);
   const attributes = ctx.request.body;
-  const newPeriod = await Period.update(periodID, attributes);
+  const periodID = parseInt(ctx.params.periodId, 10);
+  const newPeriod = await Period.update(attributes, periodID);
 
   ctx.status = 201;
   ctx.body = newPeriod;
