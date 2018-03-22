@@ -55,5 +55,21 @@ module.exports = {
     `;
     const result = await db.query(query, [year, title, description, periodId]);
     return result.rows[0];
+  },
+
+  updateAll: async (periods) => {
+    const query = `
+      UPDATE periods p
+      SET
+        year = (upd.j->>'year')::INTEGER,
+        title = upd.j->'title',
+        description = upd.j->'description'
+      FROM (SELECT json_array_elements ($1::JSON) j) upd
+      WHERE
+        p.id = (upd.j->>'id')::INTEGER
+      RETURNING id, year, title, description;
+    `;
+    const result = await db.query(query, [periods]);
+    return result.rows;
   }
 };

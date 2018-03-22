@@ -40,4 +40,13 @@ router.put('/:periodId(\\d+)', async (ctx) => {
   ctx.body = newPeriod;
 });
 
+router.put('/', async (ctx) => {
+  const attributes = ctx.request.body;
+
+  const periods = await Period.updateAll(JSON.stringify(attributes));
+
+  ctx.status = 201;
+  ctx.body = periods;
+});
+
 module.exports = router;
