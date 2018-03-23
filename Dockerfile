@@ -15,5 +15,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 3000
-CMD [ "npm", "run", "db:migrate" ]
 CMD [ "node", "index.js" ]

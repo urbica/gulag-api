@@ -12,7 +12,7 @@ module.exports = {
       SELECT *
       FROM camp_types;
     `;
-    const result = db.query(query);
+    const result = await db.query(query);
 
     return result.rows;
   }
