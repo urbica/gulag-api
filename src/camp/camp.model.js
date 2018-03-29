@@ -49,7 +49,7 @@ module.exports = {
         'subTitles', sub_titles,
         'description', description,
         'published', published,
-        'feaures', (
+        'features', (
           SELECT json_agg(
             json_build_object(
               'geometry', geom,
