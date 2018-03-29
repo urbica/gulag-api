@@ -67,5 +67,18 @@ module.exports = {
     `;
     const result = await db.query(query);
     return result.rows;
+  },
+
+  delete: async (id) => {
+    // TODO: delete locations & statistics
+    const query = `
+      DELETE FROM camps
+      WHERE camps.id = $1;
+    `;
+    try {
+      await db.query(query, [id]);
+    } catch (error) {
+      throw error;
+    }
   }
 };
