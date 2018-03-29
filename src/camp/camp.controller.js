@@ -13,7 +13,7 @@ router.post('/', async (ctx) => {
 router.get('/', async (ctx) => {
   const camps = await Camp.getAll();
 
-  ctx.body = camps;
+  ctx.body = camps[0].json_agg;
 });
 
 module.exports = router;

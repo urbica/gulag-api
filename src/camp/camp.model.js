@@ -43,8 +43,27 @@ module.exports = {
 
   getAll: async () => {
     const query = `
-      SELECT *
-      FROM camps;
+      SELECT json_agg(json_build_object (
+        'id', id,
+        'title', title,
+        'subTitles', sub_titles,
+        'description', description,
+        'published', published,
+        'feaures', (
+          SELECT json_agg(
+            json_build_object(
+              'geometry', geom,
+              'properties', json_build_object(
+                'locationId', id,
+                'description', description
+              )
+            )
+          )
+          FROM camp_locations cl
+          WHERE cl.camp_id = c.id
+        )
+      ))
+      FROM camps c;
     `;
     const result = await db.query(query);
     return result.rows;
