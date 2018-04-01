@@ -27,15 +27,15 @@ module.exports = {
 
     return {
       ...newCamp.rows[0],
-      features: [
+      locations: [
         {
+          id: location.id,
           geometry: location.geom,
-          properties: {
-            description: location.description,
-            type_id: location.type_id,
-            activity_id: location.activity_id,
-            region_id: location.region_id
-          }
+          description: location.description,
+          typeId: location.type_id,
+          activityId: location.activity_id,
+          regionId: location.region_id,
+          statistics: null
         }
       ]
     };
@@ -49,16 +49,24 @@ module.exports = {
         'subTitles', sub_titles,
         'description', description,
         'published', published,
-        'features', (
-          SELECT json_agg(
-            json_build_object(
-              'geometry', geom,
-              'properties', json_build_object(
-                'locationId', id,
-                'description', description
-              )
-            )
-          )
+        'locations', (
+          SELECT json_agg(json_build_object(
+            'id', id,
+            'geometry', geom,
+            'description', description,
+            'typeId', type_id,
+            'activityId', activity_id,
+            'regionId', region_id,
+            'statistics', coalesce((
+              SELECT json_agg(json_build_object(
+                'id', id,
+                'year', year,
+                'prisonersCount', prisoners_count
+              ))
+              FROM camp_statistics cs
+              WHERE cs.location_id = cl.id
+            ), '[]'::json)
+          ))
           FROM camp_locations cl
           WHERE cl.camp_id = c.id
         )
@@ -66,7 +74,21 @@ module.exports = {
       FROM camps c;
     `;
     const result = await db.query(query);
-    return result.rows;
+    return result.rows[0].json_agg;
+  },
+
+  update: async (camp, campId) => {
+    const {
+      title, subTitles, description, published
+    } = camp;
+    const query = `
+      UPDATE camps
+      SET title=$1, sub_titles=$2, description=$3, published=$4
+      WHERE id = $5
+      RETURNING id, title, sub_titles AS "subTitles", description, published;
+    `;
+    const result = await db.query(query, [title, subTitles, description, published, campId]);
+    return result.rows[0];
   },
 
   delete: async (id) => {

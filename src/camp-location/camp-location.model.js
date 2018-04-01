@@ -27,5 +27,6 @@ module.exports = {
     ]);
 
     return result.rows[0];
-  }
+  },
+  update: async locations => locations
 };
