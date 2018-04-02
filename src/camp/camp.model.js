@@ -12,18 +12,28 @@ const CampLocation = require('../camp-location/camp-location.model');
 module.exports = {
   create: async (camp) => {
     const {
-      title, subTitles, description, published, features
+      title, subTitles, description, published, typeId, activityId, regionId
     } = camp;
 
     const query = `
-      INSERT INTO camps(title, sub_titles, description, published)
-      VALUES($1, $2, $3, $4)
-      RETURNING *;
+      INSERT INTO camps(
+        title, sub_titles, description, published, type_id, activity_id, region_id
+      )
+      VALUES($1, $2, $3, $4, $5, $6, $7)
+      RETURNING id, title, sub_titles AS "subTitles", description, published, type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
     `;
-    const newCamp = await db.query(query, [title, subTitles, description, published]);
+    const newCamp = await db.query(query, [
+      title,
+      subTitles,
+      description,
+      published,
+      typeId,
+      activityId,
+      regionId
+    ]);
     const newCampId = newCamp.rows[0].id;
 
-    const location = await CampLocation.create(features[0], newCampId);
+    const location = await CampLocation.create(camp.locations[0], newCampId);
 
     return {
       ...newCamp.rows[0],
@@ -32,10 +42,7 @@ module.exports = {
           id: location.id,
           geometry: location.geom,
           description: location.description,
-          typeId: location.type_id,
-          activityId: location.activity_id,
-          regionId: location.region_id,
-          statistics: null
+          statistics: []
         }
       ]
     };
@@ -49,14 +56,14 @@ module.exports = {
         'subTitles', sub_titles,
         'description', description,
         'published', published,
+        'typeId', type_id,
+        'activityId', activity_id,
+        'regionId', region_id,
         'locations', (
           SELECT json_agg(json_build_object(
             'id', id,
             'geometry', geom,
             'description', description,
-            'typeId', type_id,
-            'activityId', activity_id,
-            'regionId', region_id,
             'statistics', coalesce((
               SELECT json_agg(json_build_object(
                 'id', id,
@@ -79,15 +86,31 @@ module.exports = {
 
   update: async (camp, campId) => {
     const {
-      title, subTitles, description, published
+      title, subTitles, description, published, typeId, activityId, regionId
     } = camp;
     const query = `
       UPDATE camps
-      SET title=$1, sub_titles=$2, description=$3, published=$4
-      WHERE id = $5
-      RETURNING id, title, sub_titles AS "subTitles", description, published;
+      SET
+        title=$1,
+        sub_titles=$2,
+        description=$3,
+        published=$4,
+        type_id=$5,
+        activity_id=$6,
+        region_id=$7
+      WHERE id = $8
+      RETURNING id, title, sub_titles AS "subTitles", description, published, type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
     `;
-    const result = await db.query(query, [title, subTitles, description, published, campId]);
+    const result = await db.query(query, [
+      title,
+      subTitles,
+      description,
+      published,
+      typeId,
+      activityId,
+      regionId,
+      campId
+    ]);
     return result.rows[0];
   },
 
