@@ -81,6 +81,11 @@ module.exports = {
       FROM camps c;
     `;
     const result = await db.query(query);
+
+    if (!result.rows[0].json_agg) {
+      return [];
+    }
+
     return result.rows[0].json_agg;
   },
 
