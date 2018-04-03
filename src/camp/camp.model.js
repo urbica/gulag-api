@@ -40,7 +40,7 @@ module.exports = {
       locations: [
         {
           id: location.id,
-          geometry: location.geom,
+          geometry: location.geometry,
           description: location.description,
           statistics: []
         }

@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Camp = require('./camp.model');
-// const CampLocation = require('../camp-location/camp-location.model');
+const CampLocation = require('../camp-location/camp-location.model');
 
 const router = new Router();
 
@@ -20,24 +20,20 @@ router.get('/', async (ctx) => {
 router.put('/:campId(\\d+)', async (ctx) => {
   const attributes = ctx.request.body;
   const { campId } = ctx.params;
+
   const updatedCamp = await Camp.update(attributes, campId);
+  const updatedLocations = await Promise.all(attributes.locations.map(async (location) => {
+    if (location.id === undefined) {
+      const newLocation = await CampLocation.create(location, campId);
+      return newLocation;
+    }
+    const updatedLocation = await CampLocation.update(location);
+    return updatedLocation;
+  }));
 
-  // const updatedLocations = [];
-  // attributes.locations.forEach(async (location) => {
-  //   if (location.id === undefined) {
-  //     const updatedLocation = await CampLocation.create(location, campId);
-  //     console.log(updatedLocation);
-  // updatedLocations.push(updatedLocation);
-  // } else {
-  // const updatedLocation = await CampLocation.update(location, campId);
-  // updatedLocations.push(updatedLocation);
-  //   }
-  // });
-
-  // console.log(updatedLocations);
   ctx.body = {
     ...updatedCamp,
-    locations: attributes.locations
+    locations: updatedLocations
   };
 });
 
