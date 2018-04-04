@@ -33,18 +33,11 @@ module.exports = {
     ]);
     const newCampId = newCamp.rows[0].id;
 
-    const location = await CampLocation.create(camp.locations[0], newCampId);
+    const newLocation = await CampLocation.create(camp.locations[0], newCampId);
 
     return {
       ...newCamp.rows[0],
-      locations: [
-        {
-          id: location.id,
-          geometry: location.geometry,
-          description: location.description,
-          statistics: []
-        }
-      ]
+      locations: [{ ...newLocation }]
     };
   },
 
@@ -64,6 +57,7 @@ module.exports = {
             'id', id,
             'geometry', geom,
             'description', description,
+            'orderIndex', order_index,
             'statistics', coalesce((
               SELECT json_agg(json_build_object(
                 'id', id,
