@@ -1,17 +1,16 @@
 {
-  "extends": "airbnb-base",
-  "plugins": [
-    "import",
-    "jest"
-  ],
+  "extends": [ "airbnb-base", "prettier" ],
+  "plugins": [ "import", "jest" ],
   "env": {
     "node": true,
     "jest": true
   },
   "rules": {
-    "comma-dangle": [
-      "error",
-      "never"
-    ]
+    "comma-dangle": ["error", "never"],
+    "function-paren-newline": ["error", "consistent"],
+    "max-len": ["error", { "code": 80, "ignoreUrls": true }],
+    "no-return-assign": 0,
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "quotes": ["error", "single"],
   }
 }

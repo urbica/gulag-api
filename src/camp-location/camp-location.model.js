@@ -17,15 +17,22 @@ module.exports = {
       VALUES($1, $2, $3, $4)
       RETURNING id, geom AS geometry, description, order_index AS "orderIndex";
     `;
-    const result = await db.query(query, [geometry, description, orderIndex, campId]);
+    const result = await db.query(query, [
+      geometry,
+      description,
+      orderIndex,
+      campId
+    ]);
     const newLocation = result.rows[0];
 
     const statistics = location.statistics || [];
 
-    const newStatistics = await Promise.all(statistics.map(async (stat) => {
-      const newStat = await CampStatistics.create(stat, newLocation.id);
-      return newStat;
-    }));
+    const newStatistics = await Promise.all(
+      statistics.map(async stat => {
+        const newStat = await CampStatistics.create(stat, newLocation.id);
+        return newStat;
+      })
+    );
 
     return {
       ...newLocation,
@@ -33,7 +40,7 @@ module.exports = {
     };
   },
 
-  update: async (location) => {
+  update: async location => {
     const { id, geometry, description } = location;
     const query = `
       UPDATE camp_locations
@@ -46,14 +53,16 @@ module.exports = {
     const result = await db.query(query, [geometry, description, id]);
     const updatedLocation = result.rows[0];
 
-    const updatedStatistics = await Promise.all(location.statistics.map(async (stat) => {
-      if (stat.id === undefined) {
-        const createdStat = await CampStatistics.create(stat, id);
-        return createdStat;
-      }
-      const updatedStat = await CampStatistics.update(stat);
-      return updatedStat;
-    }));
+    const updatedStatistics = await Promise.all(
+      location.statistics.map(async stat => {
+        if (stat.id === undefined) {
+          const createdStat = await CampStatistics.create(stat, id);
+          return createdStat;
+        }
+        const updatedStat = await CampStatistics.update(stat);
+        return updatedStat;
+      })
+    );
 
     return {
       ...updatedLocation,
@@ -61,7 +70,7 @@ module.exports = {
     };
   },
 
-  delete: async (id) => {
+  delete: async id => {
     const query = `
         DELETE FROM camp_locations
         WHERE camp_locations.id = $1

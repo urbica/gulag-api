@@ -10,17 +10,25 @@ const CampLocation = require('../camp-location/camp-location.model');
 // );
 
 module.exports = {
-  create: async (camp) => {
+  create: async camp => {
     const {
-      title, subTitles, description, published, typeId, activityId, regionId
+      title,
+      subTitles,
+      description,
+      published,
+      typeId,
+      activityId,
+      regionId
     } = camp;
 
     const query = `
       INSERT INTO camps(
-        title, sub_titles, description, published, type_id, activity_id, region_id
+        title, sub_titles, description, published, type_id, activity_id,
+        region_id
       )
       VALUES($1, $2, $3, $4, $5, $6, $7)
-      RETURNING id, title, sub_titles AS "subTitles", description, published, type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
+      RETURNING id, title, sub_titles AS "subTitles", description, published,
+      type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
     `;
     const newCamp = await db.query(query, [
       title,
@@ -95,7 +103,13 @@ module.exports = {
 
   update: async (camp, campId) => {
     const {
-      title, subTitles, description, published, typeId, activityId, regionId
+      title,
+      subTitles,
+      description,
+      published,
+      typeId,
+      activityId,
+      regionId
     } = camp;
     const query = `
       UPDATE camps
@@ -108,7 +122,8 @@ module.exports = {
         activity_id=$6,
         region_id=$7
       WHERE id = $8
-      RETURNING id, title, sub_titles AS "subTitles", description, published, type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
+      RETURNING id, title, sub_titles AS "subTitles", description, published,
+      type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
     `;
     const result = await db.query(query, [
       title,
@@ -123,7 +138,7 @@ module.exports = {
     return result.rows[0];
   },
 
-  delete: async (id) => {
+  delete: async id => {
     // TODO: delete locations & statistics
     const query = `
       DELETE FROM camps

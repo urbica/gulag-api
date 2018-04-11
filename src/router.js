@@ -14,11 +14,23 @@ const router = new Router();
 
 router.use('/periods', periods.routes(), periods.allowedMethods());
 router.use('/camp-regions', campRegions.routes(), campRegions.allowedMethods());
-router.use('/camp-activities', campActivities.routes(), campActivities.allowedMethods());
+router.use(
+  '/camp-activities',
+  campActivities.routes(),
+  campActivities.allowedMethods()
+);
 router.use('/camp-types', campTypes.routes(), campTypes.allowedMethods());
 router.use('/camps', camps.routes(), camps.allowedMethods());
-router.use('/camp-statistics', campStatistics.routes(), campStatistics.allowedMethods());
-router.use('/camp-location', campLocation.routes(), campLocation.allowedMethods());
+router.use(
+  '/camp-statistics',
+  campStatistics.routes(),
+  campStatistics.allowedMethods()
+);
+router.use(
+  '/camp-location',
+  campLocation.routes(),
+  campLocation.allowedMethods()
+);
 router.use('/photos', photo.routes(), photo.allowedMethods());
 
 module.exports = router;
