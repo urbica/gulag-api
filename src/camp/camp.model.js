@@ -52,6 +52,16 @@ module.exports = {
         'typeId', type_id,
         'activityId', activity_id,
         'regionId', region_id,
+        'photos', coalesce((
+          SELECT json_agg(json_build_object(
+            'id', id,
+            'title', title,
+            'description', description,
+            'path', file_path
+          ))
+          FROM photos p
+          WHERE p.camp_id = c.id
+        ), '[]'::json),
         'locations', (
           SELECT json_agg(json_build_object(
             'id', id,

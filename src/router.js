@@ -8,6 +8,7 @@ const campTypes = require('./camp-type/camp-type.controller');
 const camps = require('./camp/camp.controller');
 const campStatistics = require('./camp-statistics/camp-statistics.controller');
 const campLocation = require('./camp-location/camp-location.controller');
+const photo = require('./photo/photo.controller');
 
 const router = new Router();
 
@@ -18,5 +19,6 @@ router.use('/camp-types', campTypes.routes(), campTypes.allowedMethods());
 router.use('/camps', camps.routes(), camps.allowedMethods());
 router.use('/camp-statistics', campStatistics.routes(), campStatistics.allowedMethods());
 router.use('/camp-location', campLocation.routes(), campLocation.allowedMethods());
+router.use('/photos', photo.routes(), photo.allowedMethods());
 
 module.exports = router;
