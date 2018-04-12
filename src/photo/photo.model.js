@@ -26,6 +26,22 @@ module.exports = {
     return result;
   },
 
+  updateAll: async (photos) => {
+    const query = `
+      UPDATE photos p
+      SET
+        title = upd.j->'title',
+        description = upd.j->'description'
+      FROM (SELECT json_array_elements ($1::JSON) j) upd
+      WHERE
+        p.id = (upd.j->>'id')::INTEGER
+      RETURNING id, title, description;
+    `;
+    const result = await db.query(query, [JSON.stringify(photos)]);
+
+    return result.rows;
+  },
+
   delete: async (id) => {
     const query = `
       DELETE FROM photos

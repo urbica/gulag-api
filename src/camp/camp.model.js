@@ -18,7 +18,8 @@ module.exports = {
       published,
       typeId,
       activityId,
-      regionId
+      regionId,
+      photos
     } = camp;
 
     const query = `
@@ -45,6 +46,7 @@ module.exports = {
 
     return {
       ...newCamp.rows[0],
+      photos,
       locations: [{ ...newLocation }]
     };
   },

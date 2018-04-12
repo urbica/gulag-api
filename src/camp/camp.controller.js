@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const Camp = require('./camp.model');
 const CampLocation = require('../camp-location/camp-location.model');
+const Photo = require('../photo/photo.model');
 
 const router = new Router();
 
@@ -32,10 +33,12 @@ router.put('/:campId(\\d+)', async ctx => {
       return updatedLocation;
     })
   );
+  const updatedPhotos = await Photo.updateAll(attributes.photos);
 
   ctx.body = {
     ...updatedCamp,
-    locations: updatedLocations
+    locations: updatedLocations,
+    photos: updatedPhotos
   };
 });
 
