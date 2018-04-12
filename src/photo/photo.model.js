@@ -9,7 +9,7 @@ const db = require('../db');
 // );
 
 module.exports = {
-  create: async photo => {
+  create: async (photo) => {
     const { title, description, path, campId } = photo;
 
     const query = `
@@ -24,5 +24,21 @@ module.exports = {
     const result = newPhoto.rows[0];
 
     return result;
+  },
+
+  delete: async (id) => {
+    const query = `
+      DELETE FROM photos
+      WHERE photos.id = $1
+      RETURNING file_path;
+    `;
+
+    try {
+      const result = await db.query(query, [id]);
+
+      return result.rows[0].file_path;
+    } catch (error) {
+      throw error;
+    }
   }
 };
