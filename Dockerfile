@@ -1,17 +1,13 @@
-FROM node:8.9.4-alpine
+FROM node:8.11.1-alpine
 LABEL maintainer='bakhvalov.andrey@gmail.com'
 
 # Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY package.json ./
+COPY ["package.json", "yarn.lock", "./"]
 
-RUN npm install
-# If you are building your code for production
-# RUN npm install --only=production
+RUN yarn install --prod
 
-# Bundle app source
 COPY . .
 
 EXPOSE 3000
