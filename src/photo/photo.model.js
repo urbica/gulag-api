@@ -10,17 +10,15 @@ const db = require('../db');
 
 module.exports = {
   create: async (photo) => {
-    const { title, description, path, campId } = photo;
+    const { description, path, campId } = photo;
 
     const query = `
-      INSERT INTO photos(
-        title, description, file_path, camp_id
-      )
-      VALUES($1, $2, $3, $4)
-      RETURNING id, title, description, file_path AS path, camp_id AS "campId";
+      INSERT INTO photos(description, file_path, camp_id)
+      VALUES($1, $2, $3)
+      RETURNING id, description, file_path AS path, camp_id AS "campId";
     `;
 
-    const newPhoto = await db.query(query, [title, description, path, campId]);
+    const newPhoto = await db.query(query, [description, path, campId]);
     const result = newPhoto.rows[0];
 
     return result;
@@ -30,12 +28,11 @@ module.exports = {
     const query = `
       UPDATE photos p
       SET
-        title = upd.j->'title',
         description = upd.j->'description'
       FROM (SELECT json_array_elements ($1::JSON) j) upd
       WHERE
         p.id = (upd.j->>'id')::INTEGER
-      RETURNING id, title, description;
+      RETURNING id, description;
     `;
     const result = await db.query(query, [JSON.stringify(photos)]);
 

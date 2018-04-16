@@ -62,6 +62,7 @@ module.exports = {
         'typeId', type_id,
         'activityId', activity_id,
         'regionId', region_id,
+        'updatedAt', updated_at,
         'photos', coalesce((
           SELECT json_agg(json_build_object(
             'id', id,
@@ -111,7 +112,8 @@ module.exports = {
       published,
       typeId,
       activityId,
-      regionId
+      regionId,
+      updatedAt
     } = camp;
     const query = `
       UPDATE camps
@@ -122,10 +124,12 @@ module.exports = {
         published=$4,
         type_id=$5,
         activity_id=$6,
-        region_id=$7
-      WHERE id = $8
+        region_id=$7,
+        updated_at=$8
+      WHERE id = $9
       RETURNING id, title, sub_titles AS "subTitles", description, published,
-      type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
+      type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId",
+      updated_at AS "updatedAt";
     `;
     const result = await db.query(query, [
       title,
@@ -135,6 +139,7 @@ module.exports = {
       typeId,
       activityId,
       regionId,
+      updatedAt,
       campId
     ]);
     return result.rows[0];
