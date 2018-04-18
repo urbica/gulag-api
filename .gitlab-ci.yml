@@ -3,19 +3,19 @@ stages:
   - build
 
 test:
-  stage:         test
-  image:         node:8.9.4-alpine
+  stage: test
+  image: node:8.11.1-alpine
   script:
     - NODE_ENV=development yarn
     - NODE_ENV=development yarn lint
 
 build:
-  stage:         build
-  image:         docker:git
+  stage: build
+  image: docker:git
   services:
     - docker:dind
   variables:
-    IMAGE_TAG:   $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
   script:
