@@ -19,17 +19,19 @@ module.exports = {
       typeId,
       activityId,
       regionId,
-      photos
+      photos,
+      notes
     } = camp;
 
     const query = `
       INSERT INTO camps(
         title, sub_titles, description, published, type_id, activity_id,
-        region_id
+        region_id, notes
       )
-      VALUES($1, $2, $3, $4, $5, $6, $7)
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id, title, sub_titles AS "subTitles", description, published,
-      type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId";
+      type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId",
+      notes;
     `;
     const newCamp = await db.query(query, [
       title,
@@ -38,7 +40,8 @@ module.exports = {
       published,
       typeId,
       activityId,
-      regionId
+      regionId,
+      notes
     ]);
     const newCampId = newCamp.rows[0].id;
 
@@ -63,6 +66,7 @@ module.exports = {
         'activityId', activity_id,
         'regionId', region_id,
         'updatedAt', updated_at,
+        'notes', coalesce(notes, ''),
         'photos', coalesce((
           SELECT json_agg(json_build_object(
             'id', id,
@@ -113,7 +117,8 @@ module.exports = {
       typeId,
       activityId,
       regionId,
-      updatedAt
+      updatedAt,
+      notes
     } = camp;
     const query = `
       UPDATE camps
@@ -125,11 +130,12 @@ module.exports = {
         type_id=$5,
         activity_id=$6,
         region_id=$7,
-        updated_at=$8
-      WHERE id = $9
+        updated_at=$8,
+        notes=$9
+      WHERE id = $10
       RETURNING id, title, sub_titles AS "subTitles", description, published,
       type_id AS "typeId", activity_id AS "activityId", region_id AS "regionId",
-      updated_at AS "updatedAt";
+      updated_at AS "updatedAt", notes;
     `;
     const result = await db.query(query, [
       title,
@@ -140,6 +146,7 @@ module.exports = {
       activityId,
       regionId,
       updatedAt,
+      notes,
       campId
     ]);
     return result.rows[0];
