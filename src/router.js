@@ -9,6 +9,7 @@ const camps = require('./camp/camp.controller');
 const campStatistics = require('./camp-statistics/camp-statistics.controller');
 const campLocation = require('./camp-location/camp-location.controller');
 const photo = require('./photo/photo.controller');
+const login = require('./loginHandler');
 
 const router = new Router();
 
@@ -32,5 +33,6 @@ router.use(
   campLocation.allowedMethods()
 );
 router.use('/photos', photo.routes(), photo.allowedMethods());
+router.use('/login', login.routes(), login.allowedMethods());
 
 module.exports = router;

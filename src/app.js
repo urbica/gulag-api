@@ -1,8 +1,10 @@
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const cors = require('kcors');
+const koajwt = require('koa-jwt');
 
-const loginHandler = require('./loginHandler');
+require('dotenv').config();
+
 const router = require('./router');
 
 const app = new Koa();
@@ -10,7 +12,8 @@ const app = new Koa();
 app
   .use(bodyParser())
   .use(cors())
-  .use(loginHandler)
+  .use(koajwt({ secret: process.env.API_SECRET })
+    .unless({ path: '/login', method: 'GET' }))
   .use(router.routes())
   .use(router.allowedMethods());
 
