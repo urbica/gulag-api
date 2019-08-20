@@ -4,7 +4,7 @@ stages:
 
 test:
   stage: test
-  image: node:8.11.1-alpine
+  image: node:12-alpine
   script:
     - NODE_ENV=development yarn
     - NODE_ENV=development yarn lint
