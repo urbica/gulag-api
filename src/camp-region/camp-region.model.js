@@ -14,5 +14,16 @@ module.exports = {
     const result = await db.query(query);
 
     return result.rows;
+  },
+  update: async (region, id) => {
+    const query = `
+      UPDATE camp_regions
+      SET title=$1
+      WHERE id=$2
+      RETURNING id, title;
+    `;
+    const result = await db.query(query, [region, id]);
+
+    return result.rows[0];
   }
 };
