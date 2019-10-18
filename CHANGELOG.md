@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](http://gitlab.urbica.co:2222/gulag/api/compare/v1.0.1...v1.1.0) (2019-10-18)
+
+
+### Features
+
+* **camp-activity:** add post method ([8038d0b](http://gitlab.urbica.co:2222/gulag/api/commit/8038d0b))
+* **camp-region:** add put method ([b7a9e32](http://gitlab.urbica.co:2222/gulag/api/commit/b7a9e32))
+
 ### [1.0.1](http://gitlab.urbica.co:2222/gulag/api/compare/v1.0.0...v1.0.1) (2019-08-20)
 
 ## 1.0.0 (2019-08-20)
