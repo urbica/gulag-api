@@ -14,5 +14,16 @@ module.exports = {
     const result = await db.query(query);
 
     return result.rows;
+  },
+  create: async (activity) => {
+    const query = `
+      INSERT INTO camp_activities(title, id)
+      VALUES($1, $2)
+      RETURNING id, title;
+    `;
+    // TODO: remove this hardcode
+    const newActivity = await db.query(query, [activity, 14]);
+
+    return newActivity.rows[0];
   }
 };

@@ -8,4 +8,14 @@ router.get('/', async (ctx) => {
   ctx.body = campActivities;
 });
 
+router.post('/', async (ctx) => {
+  const attributes = ctx.request.body;
+  const activity = JSON.stringify(attributes);
+
+  const campActivity = await CampActivity.create(activity);
+
+  ctx.body = campActivity;
+});
+
+
 module.exports = router;
